@@ -1,0 +1,32 @@
+
+services:
+  backend:
+    build:
+      context: ./backend  # Specify the backend directory
+    volumes:
+      - ./backend:/app  # Mount the backend directory to the container
+    ports:
+      - "8000:8000"  # Expose backend port
+    depends_on:
+      - db  # If you plan to use a database later, you can link it here
+  
+  frontend:
+    build:
+      context: ./frontend  # Specify the frontend directory
+    volumes:
+      - ./frontend:/app  # Mount the frontend directory to the container
+    ports:
+      - "3000:3000"  # Expose React port
+  
+  # Optional database service if you plan to add a DB later
+  db:
+    image: mysql:8.0  # Use MySQL image for the database service
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"  # Expose the MySQL port
+    volumes:
+      - mysql_data:/var/lib/mysql  # Persist data
+
+volumes:
+  mysql_data:
